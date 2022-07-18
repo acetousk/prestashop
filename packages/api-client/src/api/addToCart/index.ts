@@ -1,8 +1,8 @@
-// import { cookieParser } from '../../helpers/cookieParser';
+import {cookieParser} from '../../helpers/cookieParser';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async function addToCart(context, params) {
-  const { psCookieKey, psCookieValue, product, quantity } = params;
+  const {psCookieKey, psCookieValue, product, quantity} = params;
   const url = new URL(context.config.api.url + context.config.api.restPath + '/cart');
 
   url.searchParams.set('id_product', product.id);
@@ -15,17 +15,14 @@ export default async function addToCart(context, params) {
 
   if (psCookieKey && psCookieValue) {
     const { data, headers } = await context.client.get(url.href, {
-      // headers: {
-      //   Cookie: psCookieKey + '=' + psCookieValue + ';'
-      // }
+      headers: {
+        Cookie: psCookieKey + '=' + psCookieValue + ';'
+      }
     });
 
-    // const cookieObject = cookieParser(headers);
+    const cookieObject = cookieParser(headers);
 
-    return {
-      data,
-      // cookieObject
-    };
+    return {data, cookieObject};
   } else {
     return {};
   }

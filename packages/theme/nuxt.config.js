@@ -38,9 +38,7 @@ export default {
   loading: { color: '#fff' },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    '~/plugins/api-cookie',
-  ],
+  plugins: [],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -162,7 +160,7 @@ export default {
         .forEach((route) => routes.unshift(route));
     },
     middleware: ['checkout'],
-    scrollBehavior(_to, _from, savedPosition) {
+    scrollBehavior (_to, _from, savedPosition) {
       if (savedPosition) {
         return savedPosition;
       } else {

@@ -9,8 +9,7 @@ module.exports = {
           url: 'http://localhost:8080',
           restPath: '/rest/s1/pop'
         }
-      },
-
+      }
     }
   }
 };

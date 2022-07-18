@@ -7,7 +7,7 @@ const handleRequest = async (params) => {
 
   const psCookieKey = await context.$prestashop.config.app.$cookies.get(await context.$prestashop.config.app.$config.psCustomerCookieKey);
   const psCookieValue = await context.$prestashop.config.app.$cookies.get(await context.$prestashop.config.app.$config.psCustomerCookieValue);
-  const moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
+  let moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
 
   // Logger.error(typeof request);
   if (psCookieValue && moquiSessionToken) {
@@ -25,11 +25,11 @@ const handleRequest = async (params) => {
     // Logger.error(JSON.stringify(params.url) + ' context.$prestashop.api ' + JSON.stringify(context.$prestashop.api));
 
     Logger.error(JSON.stringify(params.url) + ' params.headers: ' + JSON.stringify(params.headers));
-    const { data, headers, cookieObject } = await context.$prestashop.api.bootstrap(params);
+    const {data, headers, cookieObject} = await context.$prestashop.api.bootstrap(params);
     Logger.error(JSON.stringify(params.url) + ' headers: ' + JSON.stringify(headers));
 
     // Logger.error('handleRequest data: ' + JSON.stringify(data));
-    // console.log(JSON.stringify(context.$prestashop.config.app));
+
     if (cookieObject) {
       const psCookieKeyNew = cookieObject?.vsfPsKeyCookie;
       if (psCookieKeyNew && psCookieKeyNew !== psCookieKey) {
@@ -51,24 +51,21 @@ const handleRequest = async (params) => {
       }
     }
     if (headers) {
-      const moquiSessionTokenNew = headers.moquisessiontoken ? headers.moquisessiontoken : headers['x-csrf-token'];
+      const moquiSessionTokenNew = headers['moquisessiontoken'] ? headers['moquisessiontoken'] : headers['x-csrf-token'];
       if (moquiSessionTokenNew && moquiSessionTokenNew !== moquiSessionToken) {
         await context.$prestashop.config.app.$cookies.set('moquiSessionToken', moquiSessionTokenNew);
         Logger.error(JSON.stringify(params.url) + ' moquiSessionTokenNew: ' + JSON.stringify(moquiSessionTokenNew));
         const moquiSessionTokenNewNew = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
         Logger.error(JSON.stringify(params.url) + ' moquiSessionTokenNewNew: ' + JSON.stringify(moquiSessionTokenNewNew));
 
-        Logger.error(JSON.stringify(params.url) + ' moquiSessionTokenNew === context.$prestashop.config.app.$cookies.get(\'moquiSessionToken\'): ' + JSON.stringify(moquiSessionTokenNew === await context.$prestashop.config.app.$cookies.get('moquiSessionToken')));
-        Logger.error(JSON.stringify(params.url) + ' moquiSessionTokenNew === moquiSessionTokenNewNew ' + JSON.stringify(moquiSessionTokenNew === moquiSessionTokenNewNew));
+        Logger.error(JSON.stringify(params.url) + ' moquiSessionTokenNew === context.$prestashop.config.app.$cookies.get(\'moquiSessionToken\'): ' + JSON.stringify(moquiSessionTokenNew === await context.$prestashop.config.app.$cookies.get('moquiSessionToken')) );
+        Logger.error(JSON.stringify(params.url) + ' moquiSessionTokenNew === moquiSessionTokenNewNew ' + JSON.stringify(moquiSessionTokenNew === moquiSessionTokenNewNew) );
 
-        Logger.error(JSON.stringify(params.url) + ' await context.$prestashop.config.app.$cookies.get(\'moquiSessionToken\'); ' +
-          JSON.stringify(await context.$prestashop.config.app.$cookies.get('moquiSessionToken')));
+        Logger.error(JSON.stringify(params.url) + ' await context.$prestashop.config.app.$cookies.get(\'moquiSessionToken\'); '
+          + JSON.stringify(await context.$prestashop.config.app.$cookies.get('moquiSessionToken')) );
 
         // console.assert(moquiSessionTokenNew === context.$prestashop.config.app.$cookies.get('moquiSessionToken'), "moquiSessionTokenNew !== context.$prestashop.config.app.$cookies.get('moquiSessionToken')");
       }
-      // else {
-      //   await context.$prestashop.config.app.$cookies.set('moquiSessionToken', moquiSessionTokenNew);
-      // }
     }
 
     return data;

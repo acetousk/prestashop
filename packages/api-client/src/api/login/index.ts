@@ -1,6 +1,4 @@
-// import { cookieParser } from '../../helpers/cookieParser';
-
-import { cookieParser } from "../../helpers/cookieParser";
+import {cookieParser} from '../../helpers/cookieParser';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async function login(context, params) {
@@ -11,20 +9,12 @@ export default async function login(context, params) {
     email: username,
     password: password
   }, {
-    // headers: {
-    //   Cookie: psCookieKey + '=' + psCookieValue + ';'
-    // }
+    headers: {
+      Cookie: psCookieKey + '=' + psCookieValue + ';'
+    }
   });
 
-  console.log('data', data);
-  console.log('headers', headers);
   const cookieObject = cookieParser(headers);
-  console.log('cookieObject', cookieObject);
 
-  // const cookieObject = cookieParser(headers);
-
-  return {
-    data
-    // cookieObject
-  };
+  return {data, cookieObject};
 }

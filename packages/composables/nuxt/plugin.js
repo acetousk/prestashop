@@ -10,8 +10,6 @@ export default integrationPlugin(({ app, integration }) => {
       const currentToken = app.$cookies.get(SP_TOKEN_COOKIE_NAME);
 
       if (!currentToken || currentToken.access_token !== newToken.access_token) {
-        console.warn("##### SETTING COOKIE")
-        console.warn("##### SP_TOKEN_COOKIE_NAME -> " + SP_TOKEN_COOKIE_NAME + " -> " + newToken)
         app.$cookies.set(SP_TOKEN_COOKIE_NAME, newToken);
       }
     } catch (e) {
