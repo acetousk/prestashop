@@ -7,7 +7,7 @@ import type { Product } from '@vue-storefront/prestashop-api';
 import type {
   UseProductSearchParams as SearchParams
 } from '../types';
-import {handleRequest} from '../helpers';
+import { handleRequest } from '../helpers';
 
 const params: UseProductFactoryParams<Product, SearchParams> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,7 +15,7 @@ const params: UseProductFactoryParams<Product, SearchParams> = {
     const { variant } = params;
 
     if (variant) {
-      const variantObj = { };
+      const variantObj = {};
       params.refresh = true;
       for (const i in variant) {
         const splitted = variant[i].split('-');
@@ -26,7 +26,8 @@ const params: UseProductFactoryParams<Product, SearchParams> = {
 
     let data;
     if (params.id) {
-      data = await handleRequest({method: 'get',
+      data = await handleRequest({
+        method: 'get',
         url: '/productdetail',
         params: {
           // eslint-disable-next-line camelcase
@@ -39,7 +40,8 @@ const params: UseProductFactoryParams<Product, SearchParams> = {
       });
 
     } else if (params.featured) {
-      data = await handleRequest({method: 'get', url: '/featuredproducts'});
+      // data = await handleRequest({method: 'get', url: '/featuredproducts'});
+      data = { psdata: null }
     }
     return data.psdata;
   }

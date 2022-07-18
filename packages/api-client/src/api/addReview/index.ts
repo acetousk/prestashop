@@ -15,10 +15,10 @@ export default async function addReview(context, params) {
       1: criterion
     }
   }, {
-    headers: {
-      Cookie: key + '=' + value + ';',
-      moquiSessionToken: moquiSessionToken
-    }
+    // headers: {
+    //   Cookie: key + '=' + value + ';',
+    //   moquiSessionToken: moquiSessionToken
+    // }
   });
 
   return { data };

@@ -1,5 +1,5 @@
-import {cookieParser} from '../../helpers/cookieParser';
-import {logger} from '../../helpers/logging';
+// import { cookieParser } from '../../helpers/cookieParser';
+import { logger } from '../../helpers/logging';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async function register(context, params) {
@@ -20,10 +20,10 @@ export default async function register(context, params) {
     firstName: firstName,
     lastName: lastName
   }, {
-    headers: {
-      Cookie: psCookieKey + '=' + psCookieValue + ';',
-      moquiSessionToken: moquiSessionToken
-    }
+    // headers: {
+    //   Cookie: psCookieKey + '=' + psCookieValue + ';',
+    //   moquiSessionToken: moquiSessionToken
+    // }
   });
 
   logger.info('register Data');
@@ -32,7 +32,10 @@ export default async function register(context, params) {
   logger.info('register Headers');
   logger.info(headers);
 
-  const cookieObject = cookieParser(headers);
+  // const cookieObject = cookieParser(headers);
 
-  return {data, headers, cookieObject};
+  return {
+    data, headers,
+    // cookieObject
+  };
 }

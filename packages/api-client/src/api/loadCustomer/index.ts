@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-import {logger} from '../../helpers/logging';
+import { logger } from '../../helpers/logging';
 
 export default async function loadCustomer(context, params) {
 
@@ -7,10 +7,10 @@ export default async function loadCustomer(context, params) {
   logger.warn('loadCustomer moquiSessionToken ' + JSON.stringify(params.moquiSessionToken));
 
   const { data } = await context.client.get(url.href, {
-    headers: {
-      Cookie: params.key + '=' + params.value + ';',
-      moquiSessionToken: params.moquiSessionToken
-    }
+    // headers: {
+    //   Cookie: params.key + '=' + params.value + ';',
+    //   moquiSessionToken: params.moquiSessionToken
+    // }
   });
   return data;
 }

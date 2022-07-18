@@ -18,17 +18,27 @@ export const useBootstrap = () => {
     Logger.debug('bootstrap/boot');
 
     try {
+      console.log('useBootstrap');
       loading.value = true;
 
-      const data = await handleRequest({method: 'get',
-        url: '/lightbootstrap',
-        params: {
-          // eslint-disable-next-line camelcase
-          menu_with_images: 'single',
-          requestHostName: context.req?.headers?.host
-        },
-        useCredentials: true
-      });
+      // const data = await handleRequest({method: 'get',
+      //   url: '/lightbootstrap',
+      //   params: {
+      //     // eslint-disable-next-line camelcase
+      //     menu_with_images: 'single',
+      //     requestHostName: context.req?.headers?.host
+      //   },
+      //   useCredentials: true
+      // });
+      const { data, headers, cookieObject } = await context.$prestashop.api.bootstrap();
+      context.$cookies.set(cookieObject.vsfPsKeyCookie, cookieObject.vsfPsValCookie);
+      console.log('isSSR', !!process.server)
+      console.log('isClient', !!process.client)
+      console.log('cookieObject', cookieObject);
+      console.log('GD');
+      console.log('key= ' + cookieObject.vsfPsKeyCookie + 'val=' + cookieObject.vsfPsValCookie);
+
+      setTimeout(() => console.log('context.$cookies.get(\'cookieObject.vsfPsKeyCookie\') ' + context.$cookies.get(cookieObject.vsfPsKeyCookie)), 2000);
 
       if (data?.psdata?.menuItems && menuItems.value !== data?.psdata?.menuItems) menuItems.value = data?.psdata?.menuItems;
       return data;

@@ -12,6 +12,7 @@ import type {
 const params: UseCartFactoryParams<Cart, CartItem, PsProduct> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   load: async (context: Context, { customQuery }) => {
+    return null;
     const vsfCookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
     const vsfCookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
 
