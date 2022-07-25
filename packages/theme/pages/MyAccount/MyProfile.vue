@@ -6,23 +6,23 @@
         {{ $t('Feel free to edit') }}
       </p>
 
-      <ProfileUpdateForm @submit="updatePersonalData" />
+      <ProfileUpdateForm @submit="updatePersonalData"/>
 
-      <p class="notice">
-        {{ $t('Use your personal data') }}
-        <a href="">{{ $t('Privacy Policy') }}</a>
-      </p>
+<!--      <p class="notice">-->
+<!--        {{ $t('Use your personal data') }}-->
+<!--        <a href="">{{ $t('Privacy Policy') }}</a>-->
+<!--      </p>-->
     </SfTab>
 
     <!-- Password reset -->
     <SfTab title="Password change">
       <p class="message">
-        {{ $t('Change password your account') }}:<br />
+        {{ $t('Change password your account') }}:<br/>
         {{ $t('Your current email address is') }}
         <span class="message__label">{{ emailAddress }}</span>
       </p>
 
-      <PasswordResetForm @submit="updatePassword" />
+      <PasswordResetForm @submit="updatePassword"/>
     </SfTab>
   </SfTabs>
 </template>
@@ -34,6 +34,8 @@ import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm';
 import { SfTabs, SfInput, SfButton } from '@storefront-ui/vue';
 import { useUser, userGetters } from '@vue-storefront/prestashop';
+import {useRouter} from '@nuxtjs/composition-api';
+import {useUiNotification, useUiState} from '~/composables';
 
 extend('email', {
   ...email,
@@ -76,21 +78,64 @@ export default {
     PasswordResetForm
   },
 
-  setup() {
-    const { user, updateUser, changePassword } = useUser();
+  setup(props, context) {
+    // const uiState = useUiState();
+    const router = useRouter();
+    const { send: sendNotification } = useUiNotification();
+    const { user, load, updateUser, changePassword, error: userError } = useUser();
 
-    const emailAddress = userGetters.getEmailAddress(user.value);
-    const formHandler = async (fn, onComplete, onError) => {
+    let emailAddress;
+    // only run client side
+    if (process.client) {
+      Promise.resolve(load());
+      console.log('myprofile setup user.value: ' + JSON.stringify(user.value));
+      if (user.value) emailAddress = userGetters.getEmailAddress(user.value);
+      else {
+        // TODO: handle the scenario when reloading
+        // router.push(context.root.localePath('/'));
+        // sendNotification({
+        //   key: 'user_load_error',
+        //   message: 'User load has failed!',
+        //   type: 'danger',
+        //   title: 'Error',
+        //   icon: 'danger'
+        // });
+        // return;
+      }
+    }
+
+    //   const formHandler = async <T extends () => Promise<unknown>>(
+    //     onSubmit: T,
+    //     onComplete: OnFormComplete,
+    //     onError: OnFormError,
+    // )
+
+    const formHandler = async (onSubmit, onComplete, onError) => {
       try {
-        const data = await fn();
-        await onComplete(data);
+        console.log('formHandler start');
+        await onSubmit();
+        console.log('formHandler user: ' + JSON.stringify(user.value));
+        if (userError.value.updateUser) throw { message: userError.value.updateUser?.message };
+        if (userError.value.changePassword) throw { message: userError.value.changePassword?.message };
+        onComplete(user.value);
+
       } catch (error) {
+        console.log(error);
         onError(error);
       }
     };
 
+    // const updatePersonalData = ({ form, onComplete, onError }) => formHandler(async () => {
+    //   // const data = await updateUser({ user: form.value });
+    //   // console.log('updatePersonalData data: ' + JSON.stringify(data));
+    //   // return data;
+    //   const data = await updateUser({ user: form.value });
+    //   console.log('updatePersonalData data: ' + JSON.stringify(data));
+    //   console.log('updatePersonalData user: ' + JSON.stringify(user));
+    //   return user;
+    // }, onComplete, onError);
     const updatePersonalData = ({ form, onComplete, onError }) => formHandler(() => updateUser({ user: form.value }), onComplete, onError);
-    const updatePassword = ({ form, onComplete, onError }) => formHandler(() => changePassword({ current: form.value.currentPassword, new: form.value.newPassword, customQuery: form.value.currentUser }), onComplete, onError);
+    const updatePassword = ({ form, onComplete, onError }) => formHandler(() => changePassword({current: form.value.currentPassword, new: form.value.newPassword, customQuery: form.value.currentUser}), onComplete, onError);
 
     return {
       updatePersonalData,

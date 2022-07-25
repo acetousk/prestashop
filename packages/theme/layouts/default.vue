@@ -31,7 +31,7 @@ import WishlistSidebar from '~/components/WishlistSidebar.vue';
 import LoginModal from '~/components/LoginModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import Notification from '~/components/Notification';
-import { onSSR } from '@vue-storefront/core';
+// import { onSSR } from '@vue-storefront/core';
 import { useRoute } from '@nuxtjs/composition-api';
 import { useCart, useStore, useUser, useWishlist, useBootstrap } from '@vue-storefront/prestashop';
 
@@ -50,28 +50,29 @@ export default {
     Notification
   },
 
-  setup() {
+  // eslint-disable-next-line func-names
+  setup: function () {
     const route = useRoute();
+    const {boot: boot} = useBootstrap();
     const { load: loadStores } = useStore();
     const { load: loadUser } = useUser();
     const { load: loadCart } = useCart();
-    const { load: loadWishlist } = useWishlist();
+    // const { load: loadWishlist } = useWishlist();
 
-    const {
-      boot: boot
-    } = useBootstrap();
-
-    onSSR(async () => {
-      await Promise.all([
-        boot(),
-        loadStores(),
-        loadUser(),
-        loadCart(),
-        loadWishlist()
-      ]);
-    });
+    // only run client side
+    if (process.client) {
+      // make sure to get a cookie and csrf token before doing the rest of the calls
+      boot()
+        .then(() => Promise.all([
+          loadStores(),
+          loadUser(),
+          loadCart() // ,
+          // loadWishlist()
+        ]));
+    }
 
     return {
+      // eslint-disable-next-line line-comment-position
       route
     };
   }

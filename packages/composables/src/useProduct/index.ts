@@ -7,6 +7,7 @@ import type { Product } from '@vue-storefront/prestashop-api';
 import type {
   UseProductSearchParams as SearchParams
 } from '../types';
+import {handleRequest} from '../helpers';
 
 const params: UseProductFactoryParams<Product, SearchParams> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,7 +23,22 @@ const params: UseProductFactoryParams<Product, SearchParams> = {
       }
       params.variantObj = variantObj;
     }
-    const data = await context.$prestashop.api.getProduct(params);
+
+    let data;
+    if (params.id) {
+      data = await handleRequest(context, {method: 'get',
+        url: '/productdetail',
+        params: {
+          // eslint-disable-next-line camelcase
+          product_id: params.id,
+          refresh: params.refresh,
+          group: params.variantObj
+        }
+      });
+
+    } else if (params.featured) {
+      data = await handleRequest(context, {method: 'get', url: '/featuredproducts'});
+    }
     return data.psdata;
   }
 };

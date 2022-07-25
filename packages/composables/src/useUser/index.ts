@@ -8,25 +8,19 @@ import type {
   UseUserUpdateParams as UpdateParams,
   UseUserRegisterParams as RegisterParams
 } from '../types';
+import {handleRequest} from '../helpers';
 
 const params: UseUserFactoryParams<User, UpdateParams, RegisterParams> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   load: async (context: Context) => {
-    const cookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-    const cookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
+    const data: any = await handleRequest(context, {method: 'get', url: '/accountInfo'});
 
-    const key = await context.$prestashop.config.app.$cookies.get(cookieKey);
-    const value = await context.$prestashop.config.app.$cookies.get(cookieValue);
-    const moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
-    if (key && value) {
-      const result: any = await context.$prestashop.api.loadCustomer({key, value, moquiSessionToken});
-      if (result.code === 410) {
-        return null;
-      }
-      return result.psdata;
-    } else {
+    if (data?.errorCode) {
+      throw { message: data?.errors ? data?.errors : 'User load failed' };
       return null;
     }
+
+    return data?.psdata;
 
     // todo: setup User type
     return {};
@@ -34,82 +28,65 @@ const params: UseUserFactoryParams<User, UpdateParams, RegisterParams> = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logOut: async (context: Context) => {
-    const cookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-    const cookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
+    const data = await handleRequest(context, {method: 'get', url: '/logout'});
 
-    context.$prestashop.config.app.$cookies.remove(cookieKey);
-    context.$prestashop.config.app.$cookies.remove(cookieValue);
-
-    // todo: call logout api
+    context.$prestashop.config.app.$cookies.remove(context.$prestashop.config.app.$config.psCustomerCookieKey);
+    context.$prestashop.config.app.$cookies.remove(context.$prestashop.config.app.$config.psCustomerCookieValue);
+    context.$prestashop.config.app.$cookies.remove('moquiSessionToken');
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateUser: async (context: Context, { currentUser, updatedUserData }) => {
-    const vsfCookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-    const vsfCookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
+    // console.log('updateUser updatedUserData ' + JSON.stringify(updatedUserData));
+    // let data;
+    // let data2;
+    const data = await handleRequest(context, {method: 'post',
+      url: '/accountedit',
+      data: updatedUserData
+    });
 
-    const psCookieKey = await context.$prestashop.config.app.$cookies.get(vsfCookieKey);
-    const psCookieValue = await context.$prestashop.config.app.$cookies.get(vsfCookieValue);
-    const moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
+    console.log('updateUser data: ' + JSON.stringify(data));
+    const data2 = await handleRequest(context, {method: 'get', url: '/accountInfo'});
 
-    console.log("updateUser moquiSessionToken " + JSON.stringify(moquiSessionToken));
+    if (data?.errors) throw { message: data?.errors ? data?.errors : 'Update User failed' };
+    if (data?.psdata?.message && !data2?.psdata?.message) data2.psdata.message = data?.psdata?.message;
 
-    const { data, cookieObject } = await context.$prestashop.api.updateCustomer({ psCookieKey, psCookieValue, updatedUserData, moquiSessionToken });
+    console.log('updateUser data2: ' + JSON.stringify(data2));
 
-    if (data.success) {
-      if (cookieObject) {
-        await context.$prestashop.config.app.$cookies.set(vsfCookieKey, cookieObject.vsfPsKeyCookie);
-        await context.$prestashop.config.app.$cookies.set(vsfCookieValue, cookieObject.vsfPsValCookie);
-      }
-      const cookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-      const cookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
+    return data2.psdata;
 
-      const key = await context.$prestashop.config.app.$cookies.get(cookieKey);
-      const value = await context.$prestashop.config.app.$cookies.get(cookieValue);
-      if (key && value) {
-        const result: any = await context.$prestashop.api.loadCustomer({key, value});
-        return result.psdata;
-      }
-    }
+    // console.log('updateUser data ' + JSON.stringify(data));
+    // return data;
+    // console.log('updateUser data2 ' + JSON.stringify(data2));
+
+    // const data2: any = await ;
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   register: async (context: Context, { email, password, firstName, lastName }) => {
-    const vsfCookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-    const vsfCookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
-
-    const psCookieKey = await context.$prestashop.config.app.$cookies.get(vsfCookieKey);
-    const psCookieValue = await context.$prestashop.config.app.$cookies.get(vsfCookieValue);
-
-    Logger.error("user 1 context.$prestashop.config.app.$cookies.get('moquiSessionToken');"+JSON.stringify(await context.$prestashop.config.app.$cookies.get('moquiSessionToken')));
-
-    let moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
-
-    const {data, headers, cookieObject} = await context.$prestashop.api.register({email, password, firstName, lastName, psCookieKey, psCookieValue, moquiSessionToken});
-    const code = data?.code;
-
-    Logger.error("user headers['moquisessiontoken']: "+JSON.stringify(headers['moquisessiontoken']));
-
-
-    Logger.error("user 2 context.$prestashop.config.app.$cookies.get('moquiSessionToken'): "+JSON.stringify(await context.$prestashop.config.app.$cookies.get('moquiSessionToken')));
-
-    if (code === 200) {
-      await context.$prestashop.config.app.$cookies.set(vsfCookieKey, cookieObject.vsfPsKeyCookie);
-      await context.$prestashop.config.app.$cookies.set(vsfCookieValue, cookieObject.vsfPsValCookie);
-      moquiSessionToken = headers['moquisessiontoken'] ? headers['moquisessiontoken'] : headers['x-csrf-token'];
-      await context.$prestashop.config.app.$cookies.set('moquiSessionToken', moquiSessionToken);
-
-      const result: any = await context.$prestashop.api.loadCustomer({key: cookieObject.vsfPsKeyCookie, value: cookieObject.vsfPsValCookie, moquiSessionToken});
-
-      if (result.code === 410) {
-        return {};
+    const data = await handleRequest(context, {method: 'post',
+      url: '/register',
+      data: {
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName
       }
-      return result.psdata;
+    });
 
+    // Logger.error('data: ' + JSON.stringify(data));
+
+    if (data?.errors) {
+      throw { message: data?.errors ? data?.errors : 'Registration failed' };
+    }
+
+    const code = data?.code;
+    if (code === 200) {
+      const data: any = await handleRequest(context, {method: 'get', url: '/accountInfo'});
+
+      if (data.code === 410) return {};
+      return data.psdata;
     } else if (code === 306) {
-      throw {
-        message: 'Registration failed'
-      };
     }
 
     return {};
@@ -117,25 +94,16 @@ const params: UseUserFactoryParams<User, UpdateParams, RegisterParams> = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logIn: async (context: Context, { username, password }) => {
-    const vsfCookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-    const vsfCookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
-
-    const psCookieKey = await context.$prestashop.config.app.$cookies.get(vsfCookieKey);
-    const psCookieValue = await context.$prestashop.config.app.$cookies.get(vsfCookieValue);
-    const moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
-
-    const {data, cookieObject} = await context.$prestashop.api.login({username, password, psCookieKey, psCookieValue, moquiSessionToken});
-    const code = data.code;
-
-    if (code === 200) {
-      if (cookieObject) {
-        await context.$prestashop.config.app.$cookies.set(vsfCookieKey, cookieObject.vsfPsKeyCookie);
-        await context.$prestashop.config.app.$cookies.set(vsfCookieValue, cookieObject.vsfPsValCookie);
+    const data = await handleRequest(context, {method: 'post',
+      url: '/login',
+      data: {
+        email: username,
+        password: password
       }
-    } else if (code === 306) {
-      throw {
-        message: 'The provided credentials are invalid'
-      };
+    });
+
+    if (data?.errorCode) {
+      throw { message: data?.errors ? data?.errors : 'The provided credentials are invalid' };
     }
 
     return data.psdata.user;
@@ -149,29 +117,19 @@ const params: UseUserFactoryParams<User, UpdateParams, RegisterParams> = {
       new_password: newPassword,
       ...customQuery
     };
-    const vsfCookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-    const vsfCookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
+    const data = await handleRequest(context, {method: 'post',
+      url: '/accountedit',
+      data: updatedUserData
+    });
 
-    const psCookieKey = await context.$prestashop.config.app.$cookies.get(vsfCookieKey);
-    const psCookieValue = await context.$prestashop.config.app.$cookies.get(vsfCookieValue);
-    const moquiSessionToken = await context.$prestashop.config.app.$cookies.get('moquiSessionToken');
+    const data2: any = await handleRequest(context, {method: 'get', url: '/accountInfo'});
 
-    const { data, cookieObject } = await context.$prestashop.api.updateCustomer({ psCookieKey, psCookieValue, updatedUserData, moquiSessionToken });
-    if (data.success) {
-      if (cookieObject) {
-        await context.$prestashop.config.app.$cookies.set(vsfCookieKey, cookieObject.vsfPsKeyCookie);
-        await context.$prestashop.config.app.$cookies.set(vsfCookieValue, cookieObject.vsfPsValCookie);
-      }
-      const cookieKey = context.$prestashop.config.app.$config.psCustomerCookieKey;
-      const cookieValue = context.$prestashop.config.app.$config.psCustomerCookieValue;
+    if (data?.errors) throw { message: data?.errors ? data?.errors : 'It was not possible to update your password.' };
+    if (data?.psdata?.message && !data2?.psdata?.message) data2.psdata.message = data?.psdata?.message;
 
-      const key = await context.$prestashop.config.app.$cookies.get(cookieKey);
-      const value = await context.$prestashop.config.app.$cookies.get(cookieValue);
-      if (key && value) {
-        const result: any = await context.$prestashop.api.loadCustomer({key, value});
-        return result.psdata;
-      }
-    }
+    console.log('changePassword data2: ' + JSON.stringify(data2));
+
+    return data2.psdata;
   }
 };
 

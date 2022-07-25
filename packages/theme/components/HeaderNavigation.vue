@@ -48,10 +48,7 @@ export default {
     }
   },
   setup() {
-    const {
-      menuItems: categories
-    } = useBootstrap();
-
+    const { menuItems: categories } = useBootstrap();
     const { isMobileMenuOpen, toggleMobileMenu } = useUiState();
 
     return {

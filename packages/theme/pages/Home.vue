@@ -62,42 +62,55 @@
             :image="productGetters.getCoverImage(product)"
             :regular-price="$n(productGetters.getPrice(product).regular, 'currency')"
             :special-price="$n(productGetters.getPrice(product).regular, 'currency') === $n(productGetters.getPrice(product).special, 'currency')? '': $n(productGetters.getPrice(product).special, 'currency')"
-            :show-add-to-cart-button="true"
+            :max-rating="5"
+            :score-rating="productGetters.getAverageRating(product)"
+            :wishlistIcon="false"
+            :isAddedToCart="isInCart({ product })"
             :link="localePath(`/p/${productGetters.getId(product)}/${productGetters.getSlug(product)}`)"
             class="carousel__item__product"
-            @click:add-to-cart="HandleAddToCart({ product, quantity:1 })"
-          />
+            @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
+            >
+            <template #add-to-cart-icon v-if="productGetters.getIsVirtual(product)">
+              <SfIcon
+                key="more"
+                icon="more"
+                size="20px"
+                color="white"
+              />
+            </template>
+          </SfProductCard>
+
         </SfCarouselItem>
       </SfCarousel>
     </LazyHydrate>
 
-    <LazyHydrate when-visible>
-      <SfCallToAction
-        title="Subscribe to Newsletters"
-        button-text="Subscribe"
-        description="Be aware of upcoming sales and events. Receive gifts and special offers!"
-        :image="addBasePath('/homepage/newsletter.webp')"
-        class="call-to-action"
-      >
-        <template #button>
-          <SfButton
-            class="sf-call-to-action__button"
-            data-testid="cta-button"
-            @click="toggleNewsletterModal"
-          >
-            {{ $t('Subscribe') }}
-          </SfButton>
-        </template>
-      </SfCallToAction>
-    </LazyHydrate>
+<!--    <LazyHydrate when-visible>-->
+<!--      <SfCallToAction-->
+<!--        title="Subscribe to Newsletters"-->
+<!--        button-text="Subscribe"-->
+<!--        description="Be aware of upcoming sales and events. Receive gifts and special offers!"-->
+<!--        :image="addBasePath('/homepage/newsletter.webp')"-->
+<!--        class="call-to-action"-->
+<!--      >-->
+<!--        <template #button>-->
+<!--          <SfButton-->
+<!--            class="sf-call-to-action__button"-->
+<!--            data-testid="cta-button"-->
+<!--            @click="toggleNewsletterModal"-->
+<!--          >-->
+<!--            {{ $t('Subscribe') }}-->
+<!--          </SfButton>-->
+<!--        </template>-->
+<!--      </SfCallToAction>-->
+<!--    </LazyHydrate>-->
 
-    <LazyHydrate when-visible>
-      <NewsletterModal @email-submitted="onSubscribe" />
-    </LazyHydrate>
+<!--    <LazyHydrate when-visible>-->
+<!--      <NewsletterModal @email-submitted="onSubscribe" />-->
+<!--    </LazyHydrate>-->
 
-    <LazyHydrate when-visible>
-      <InstagramFeed />
-    </LazyHydrate>
+<!--    <LazyHydrate when-visible>-->
+<!--      <InstagramFeed />-->
+<!--    </LazyHydrate>-->
 
   </div>
 </template>
@@ -113,13 +126,14 @@ import {
   SfBannerGrid,
   SfHeading,
   SfArrow,
-  SfButton
+  SfButton,
+  SfIcon
 } from '@storefront-ui/vue';
-import { ref, useContext } from '@nuxtjs/composition-api';
+import { ref, useContext, useRouter } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import { useUiState } from '../composables';
+import {useAddToCart, useUiState} from '../composables';
 import cacheControl from './../helpers/cacheControl';
 import { onSSR, addBasePath } from '@vue-storefront/core';
 import { computed } from '@nuxtjs/composition-api';
@@ -134,8 +148,11 @@ import {
 export default {
   name: 'Home',
   setup() {
+    const router = useRouter();
     const { $config } = useContext();
     const { toggleNewsletterModal } = useUiState();
+    const { isInCart } = useCart();
+    const { addItemToCart } = useAddToCart();
     const products = ref([
       {
         title: 'Cream Beach Bag',
@@ -197,13 +214,13 @@ export default {
     const heroes = [
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION 2022',
         background: '#eceff1',
         image: addBasePath('/homepage/bannerH.webp')
       },
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION 2022',
         background: '#efebe9',
         image: addBasePath('/homepage/bannerA.webp'),
         className:
@@ -211,7 +228,7 @@ export default {
       },
       {
         title: 'Colorful summer dresses are already in store',
-        subtitle: 'SUMMER COLLECTION 2019',
+        subtitle: 'SUMMER COLLECTION 2022',
         background: '#fce4ec',
         image: addBasePath('/homepage/bannerB.webp')
       }
@@ -269,18 +286,15 @@ export default {
       products.value[index].isInWishlist = !products.value[index].isInWishlist;
     };
 
-    const {
-      products: featureProducts,
-      search: productsSearch,
-      loading: productsLoading
-    } = useProduct('relatedProducts');
+    const { products: featureProducts, search: productsSearch, loading: productsLoading } = useProduct('relatedProducts');
 
     const { send: sendNotification } = useUiNotification();
-    const { addItem: addItemToCart, isInCart } = useCart();
 
-    onSSR(async () => {
-      await productsSearch({ featured: true });
-    });
+    if (process.client) Promise.resolve(productsSearch({ featured: true }));
+
+    // onSSR(async () => {
+    //   productsSearch({ featured: true });
+    // });
 
     return {
       sendNotification,
@@ -296,21 +310,9 @@ export default {
       onSubscribe,
       addBasePath,
       banners,
-      heroes
+      heroes,
+      router
     };
-  },
-  methods: {
-    HandleAddToCart(productObj) {
-      this.addItemToCart(productObj).then(() => {
-        this.sendNotification({
-          key: 'added_to_cart',
-          message: 'Product has been successfully added to cart !',
-          type: 'success',
-          title: 'Product added!',
-          icon: 'check'
-        });
-      });
-    }
   },
   middleware: cacheControl({
     'max-age': 60,
@@ -330,7 +332,8 @@ export default {
     SfArrow,
     SfButton,
     NewsletterModal,
-    LazyHydrate
+    LazyHydrate,
+    SfIcon
   }
 };
 </script>

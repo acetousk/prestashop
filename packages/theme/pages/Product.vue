@@ -25,15 +25,16 @@
           </div>
           <div class="product__price-and-rating">
             <SfPrice
+              :class="{ 'display-none': !productGetters.getPrice(product).regular }"
               :regular="$n(productGetters.getPrice(product).regular, 'currency')"
-              :special="$n(productGetters.getPrice(product).regular, 'currency') === $n(productGetters.getPrice(product).special, 'currency')? '': $n(productGetters.getPrice(product).special, 'currency')"
+              :special="$n(productGetters.getPrice(product).regular, 'currency') === $n(productGetters.getPrice(product).special, 'currency') ? '' : $n(productGetters.getPrice(product).special, 'currency')"
             />
             <div>
               <div class="product__rating">
-                <SfRating :score="averageRating" :max="5" @onClick="alert(2)" />
+                <SfRating v-if="!!totalReviews" :score="averageRating" :max="5" @onClick="alert(2)" />
                 <a v-if="!!totalReviews" href="#" class="product__count">({{ totalReviews }})</a>
               </div>
-              <SfButton class="sf-button--text">{{ $t('Read all reviews') }}</SfButton>
+<!--              <SfButton v-if="!!totalReviews" class="sf-button&#45;&#45;text">{{ $t('Read all reviews') }}</SfButton>-->
             </div>
           </div>
           <div>
@@ -82,7 +83,7 @@
               :disabled="loading"
               :canAddToCart="stock > 0"
               class="product__add-to-cart"
-              @click="addingToCart({ product, quantity: parseInt(qty) } )"
+              @click="addItemToCart({ product, variant: route.query, quantity: parseInt(qty) } )"
             />
           </div>
 
@@ -116,7 +117,7 @@
                   @click="addReviewModal=true"
                 >ADD REVIEW</SfButton>
                 <p  v-else>You must be logged in to write comment</p>
-                <!--              TODO: loop over review type instead of API structure -->
+                <!-- TODO: loop over review type instead of API structure -->
                 <SfReview
                   v-for="review in reviews"
                   :key="reviewGetters.getReviewId(review)"
@@ -154,12 +155,12 @@
                   </SfPagination>
                 </LazyHydrate>
               </SfTab>
-              <SfTab title="Additional Information" class="product__additional-info">
-                <div class="product__additional-info">
-                  <p class="product__additional-info__title">{{ $t('Brand') }}</p>
-                  <p>{{ productGetters.getBrand(product) }}</p>
-                </div>
-              </SfTab>
+<!--              <SfTab title="Additional Information" class="product__additional-info">-->
+<!--                <div class="product__additional-info">-->
+<!--                  <p class="product__additional-info__title">{{ $t('Brand') }}</p>-->
+<!--                  <p>{{ productGetters.getBrand(product) }}</p>-->
+<!--                </div>-->
+<!--              </SfTab>-->
             </SfTabs>
           </LazyHydrate>
         </div>
@@ -173,9 +174,9 @@
         <AddReview :productId="productGetters.getId(product)" @close="addReviewModal = false" />
       </LazyHydrate>
 
-      <LazyHydrate when-visible>
-        <InstagramFeed />
-      </LazyHydrate>
+<!--      <LazyHydrate when-visible>-->
+<!--        <InstagramFeed />-->
+<!--      </LazyHydrate>-->
     </div>
   </SfLoader>
 </template>
@@ -218,6 +219,7 @@ import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 import cacheControl from './../helpers/cacheControl';
 import useUiNotification from '~/composables/useUiNotification';
+import {useAddToCart} from '~/composables';
 
 export default {
   name: 'Product',
@@ -230,18 +232,13 @@ export default {
     const qty = ref(1);
     const { id } = context.root.$route.params;
     const { products, search, loading: productLoading } = useProduct('products');
-    const {
-      products: featureProducts,
-      search: searchRelatedProducts,
-      loading: relatedLoading
-    } = useProduct('relatedProducts');
+    const {products: featureProducts, search: searchRelatedProducts, loading: relatedLoading} = useProduct('relatedProducts');
     const { addItem, loading } = useCart();
-    const { reviews: productReviews, search: searchReviews } = useReview(
-      'productReviews'
-    );
+    const { reviews: productReviews, search: searchReviews } = useReview('productReviews');
     const { send: sendNotification } = useUiNotification();
     // const pagination = computed(() => facetGetters.getPagination(result.value));
     const { isAuthenticated } = useUser();
+    const { addItemToCart } = useAddToCart();
 
     const product = computed(
       () =>
@@ -281,15 +278,29 @@ export default {
       }))
     );
 
-    onSSR(async () => {
+    // only run client side
+    if (process.client) {
+      // make sure to get a cookie and csrf token before doing the rest of the calls
       let variant = context.root.$route.query;
       if (variant && Object.keys(variant).length === 0) {
         variant = null;
       }
-      await search({ id, variant: variant });
-      await searchRelatedProducts({ featured: true });
-      await searchReviews({ productId: id, page: '1' });
-    });
+      Promise.resolve(search({ id, variant: variant })
+        .then(() => Promise.all([
+          searchRelatedProducts({ featured: true }),
+          searchReviews({ productId: id, page: '1' })
+        ])));
+    }
+
+    // onSSR(async () => {
+    //   let variant = context.root.$route.query;
+    //   if (variant && Object.keys(variant).length === 0) {
+    //     variant = null;
+    //   }
+    //   await search({ id, variant: variant });
+    //   await searchRelatedProducts({ featured: true });
+    //   await searchReviews({ productId: id, page: '1' });
+    // });
 
     const updateFilter = (filter) => {
       const variant = context.root.$route.query;
@@ -316,9 +327,13 @@ export default {
       }
 
       this.currentPage = item;
-      onSSR(async () => {
-        searchReviews({ productId: this.id, page: this.currentPage });
-      });
+
+      // only run client side
+      if (process.client) searchReviews({ productId: this.id, page: this.currentPage });
+
+      // onSSR(async () => {
+      //   searchReviews({ productId: this.id, page: this.currentPage });
+      // });
     };
 
     return {
@@ -326,6 +341,7 @@ export default {
       updateFilter,
       searchReviews,
       sendNotification,
+      route: context.root.$route,
       product,
       reviews,
       productReviews,
@@ -348,22 +364,9 @@ export default {
       productGetters,
       productGallery,
       isAuthenticated,
-      goNext
+      goNext,
+      addItemToCart
     };
-  },
-  methods: {
-    async addingToCart(Productdata) {
-      await this.addItem(Productdata).then(() => {
-        this.sendNotification({
-          key: 'product_added',
-          message: `${Productdata.product.name} has been successfully added to your cart.`,
-          type: 'success',
-          title: 'Product added!',
-          icon: 'check'
-        });
-        this.qty = 1;
-      });
-    }
   },
   components: {
     SfAlert,

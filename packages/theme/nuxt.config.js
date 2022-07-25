@@ -78,6 +78,7 @@ export default {
     ['@vue-storefront/prestashop/nuxt', {}]
   ],
 
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     ['nuxt-i18n', {
@@ -85,8 +86,13 @@ export default {
     }],
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
-    '@vue-storefront/middleware/nuxt'
+    '@vue-storefront/middleware/nuxt',
   ],
+
+  // As per: https://www.npmjs.com/package/cookie-universal-nuxt
+  //  To make it work for SSR, remember to set `ssr: true` and `target: 'server'`
+  ssr: true,
+  target: 'server',
 
   i18n: {
     currency: 'USD',

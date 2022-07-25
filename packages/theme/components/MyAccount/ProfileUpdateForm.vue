@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, reset }">
+  <ValidationObserver v-slot="{ handleSubmit, reset }" key="profile-update">
     <form
       class="form"
       @submit.prevent="handleSubmit(submitForm(reset))"
@@ -22,39 +22,34 @@
         <ValidationProvider
           v-slot="{ errors }"
           rules="required|min:2|nothavenumber"
-          class="form__element"
-        >
+          class="form__element">
           <SfInput
             v-model="form.lastName"
             name="lastName"
             label="Last Name"
             required
             :valid="!errors[0]"
-            :error-message="errors[0]"
-          />
+            :error-message="errors[0]"/>
         </ValidationProvider>
       </div>
       <div class="form__horizontal">
-        <ValidationProvider
-          v-slot="{ errors }"
-          rules="required"
-          class="form__element"
-        >
-          <SfSelect
-            v-model="form.gender"
-            label="gender"
-            required
-          >
-            <SfSelectOption v-for="option of genderOptions" :key="option.value" :value="option.value">
-              {{option.label}}
-            </SfSelectOption>
-          </SfSelect>
-        </ValidationProvider>
+<!--        <ValidationProvider-->
+<!--          v-slot="{ errors }"-->
+<!--          rules="required"-->
+<!--          class="form__element">-->
+<!--          <SfSelect-->
+<!--            v-model="form.gender"-->
+<!--            label="gender"-->
+<!--            required>-->
+<!--            <SfSelectOption v-for="option of genderOptions" :key="option.value" :value="option.value">-->
+<!--              {{option.label}}-->
+<!--            </SfSelectOption>-->
+<!--          </SfSelect>-->
+<!--        </ValidationProvider>-->
         <ValidationProvider
           v-slot="{ errors }"
           rules="required|email"
-          class="form__element"
-        >
+          class="form__element">
           <SfInput
             v-model="form.email"
             type="email"
@@ -63,16 +58,15 @@
             required
             :valid="!errors[0]"
             :error-message="errors[0]"
+            :disabled="true"
           />
         </ValidationProvider>
-
       </div>
       <div class="form__horizontal">
         <ValidationProvider
           v-slot="{ errors }"
-          rules="required|min:2"
-          class="form__element"
-        >
+          rules="required|min:8"
+          class="form__element">
         <SfInput
           v-model="currentPassword"
           type="password"
@@ -84,16 +78,19 @@
         </ValidationProvider>
       </div>
       <SfButton
+        type="submit"
         class="form__button"
-      >
-        {{ $t('Update personal data') }}
+        :disabled="loading">
+        <SfLoader :class="{ loader: loading }" :loading="loading">
+          <div>{{ $t('Update personal data') }}</div>
+        </SfLoader>
       </SfButton>
     </form>
   </ValidationObserver>
 </template>
 
 <script>
-import { defineComponent, ref } from '@nuxtjs/composition-api';
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { useUser, userGetters } from '@vue-storefront/prestashop';
 import {
@@ -101,7 +98,8 @@ import {
   SfButton,
   SfModal,
   SfSelect,
-  SfProductOption
+  SfProductOption,
+  SfLoader
 } from '@storefront-ui/vue';
 import { useUiNotification } from '~/composables';
 export default defineComponent({
@@ -112,6 +110,7 @@ export default defineComponent({
     SfModal,
     SfSelect,
     SfProductOption,
+    SfLoader,
     ValidationProvider,
     ValidationObserver
   },
@@ -124,55 +123,71 @@ export default defineComponent({
   },
   emits: ['submit'],
   setup(props, { emit }) {
-    const { user } = useUser();
+    // const { app: { i18n } } = useContext();
+    const { user, updateUser } = useUser();
     const currentPassword = ref('');
     const genderOptions = [
       { value: 1, label: 'male' },
       { value: 2, label: 'female' }
     ];
-    const resetForm = () => ({
+    const getInitialForm = () => ({
       firstName: userGetters.getFirstName(user.value),
       lastName: userGetters.getLastName(user.value),
       email: userGetters.getEmailAddress(user.value),
       gender: userGetters.getGender(user.value)
     });
-    const {
-      send: sendNotification
-    } = useUiNotification();
-    const form = ref(resetForm());
+    const { send: sendNotification } = useUiNotification();
+    let form;
+    if (process.client) {
+      form = ref(getInitialForm());
+    }
+
+    // const handleForm = (fn) => async () => {
+    //   await fn({ user: form.value });
+    // };
+
     const submitForm = (resetValidationFn) => () => {
-      const onComplete = () => {
-        form.value = resetForm();
+      const onComplete = (data) => {
+        form.value = getInitialForm();
+        console.log('submitForm data: ' + JSON.stringify(data));
         currentPassword.value = '';
         sendNotification({
           id: Symbol('user_updated'),
-          message: 'The user account data was successfully updated!',
+          message: data.message ? data.message : 'The user account data was successfully updated!',
           type: 'success',
           icon: 'check',
           persist: false,
-          title: 'User Account Update'
+          title: 'User Account'
         });
         resetValidationFn();
       };
-      const onError = () => {
+      const onError = (error) => {
         sendNotification({
-          id: Symbol('user_update_failed'),
-          message: 'Could not update user! Check password or lastname, firstname format.',
+          id: Symbol('user_updated'),
+          message: error.message,
           type: 'danger',
-          icon: 'error',
+          icon: 'cross',
           persist: false,
-          title: 'User Account Update'
+          title: 'User Account'
         });
       };
+      // const isEmailChanged = userGetters.getEmailAddress(user.value) !== form.value.email;
+      // if (isEmailChanged && !requirePassword.value) {
+      //   requirePassword.value = true;
+      // } else {
       if (currentPassword.value) {
         form.value.password = currentPassword.value;
       }
+      // const eventPayload : SubmitEventPayload<ProfileUpdateFormFields> = ;
       emit('submit', { form, onComplete, onError });
+      // }
     };
+
     return {
       currentPassword,
       form,
       submitForm,
+      // handleUpdate,
       genderOptions
     };
   }
