@@ -109,6 +109,7 @@ export default {
   'Price': 'Price',
   'Back to homepage': 'Back to homepage',
   'Select shipping method': 'Select shipping method',
+  'Select billing method': 'Select billing method',
   'Review my order': 'Review my order',
   'Select payment method': 'Select payment method',
   'Make an order': 'Make an order',
@@ -158,5 +159,12 @@ export default {
   'show more': 'show more',
   'hide': 'hide',
   'Change to grid view': 'Change to grid view',
-  'Change to list view': 'Change to list view'
+  'Change to list view': 'Change to list view',
+  'See all': 'See all',
+  'Back':'Back',
+  'Address':'Address',
+  'Addresses':'Addresses',
+  'User Account':'User Account',
+  'Submit':'Submit',
+  'Select sorting':'Select sorting'
 };

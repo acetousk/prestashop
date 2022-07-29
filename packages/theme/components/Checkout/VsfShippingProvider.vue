@@ -33,7 +33,7 @@
         {{ $t('Go back') }}
       </SfButton>
     <SfButton
-      v-e2e="'continue-to-billing'"
+      v-e2e="'continue-to-payment'"
       :disabled="!selectedMethod"
       type="button"
       @click="goToPayment"
@@ -65,10 +65,19 @@ export default {
     const selectMethod = async(method) => {
       selectedMethod.value = method;
     };
+    const goToBilling = async () => {
+      const shippingMethod = { carrierId: selectedMethod.value.endsWith(',') ? selectedMethod.value.slice(0, -1) : selectedMethod.value, addressId: props.selectedAddress };
+      await save({ shippingMethod });
+      // console.log('VsfShippingProvider goToBilling');
+      context.root.$router.push({ path: 'billing' });
+    };
     const goToPayment = async () => {
-      await save({shippingMethodId: selectedMethod.value, addressId: props.selectedAddress });
+      const shippingMethod = { carrierId: selectedMethod.value.endsWith(',') ? selectedMethod.value.slice(0, -1) : selectedMethod.value, addressId: props.selectedAddress };
+      await save({ shippingMethod });
+      // console.log('VsfShippingProvider goToBilling');
       context.root.$router.push({ path: 'payment' });
     };
+
     const shippingProvidersList = computed(()=> state.value ? shippingProviderGetters.getShippingProvidersList(state.value) : []);
     const loadShippingProviders = async () => {
       await load();
@@ -79,6 +88,7 @@ export default {
       selectedMethod,
       selectMethod,
       goToPayment,
+      goToBilling,
       loading
     };
   }

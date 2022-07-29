@@ -109,6 +109,7 @@ export default {
   'Price': 'Preis',
   'Back to homepage': 'Zurück zur Homepage',
   'Select shipping method': 'Versandart auswählen',
+  'Select billing method': 'Abrechnungsmethode auswählen',
   'Review my order': 'Meine Bestellung überprüfen',
   'Select payment method': 'Zahlungsmethode auswählen',
   'Make an order': 'Bestellung aufgeben',
@@ -158,5 +159,12 @@ export default {
   'show more': 'mehr anzeigen',
   'hide': 'ausblenden',
   'Change to grid view': 'Zur Rasteransicht wechseln',
-  'Change to list view': 'Zur Listenansicht wechseln'
+  'Change to list view': 'Zur Listenansicht wechseln',
+  'See all': 'Alles sehen',
+  'Back': 'Zurück',
+  'Address':'Adresse',
+  'Addresses':'Adressen',
+  'User Account':'Benutzerkonto',
+  'Submit':'Einsenden',
+  'Select sorting':'Wählen Sie Sortieren'
 };
