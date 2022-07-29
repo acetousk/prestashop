@@ -78,7 +78,7 @@ export default {
 
   setup(props, context) {
     // const uiState = useUiState();
-    const { send: sendNotification } = useUiNotification();
+    // const { send: sendNotification } = useUiNotification();
     const { user, load, updateUser, changePassword, error: userError } = useUser();
 
     const emailAddress = computed(() => user.value ? userGetters.getEmailAddress(user.value) : '');

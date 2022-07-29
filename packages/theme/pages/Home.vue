@@ -35,7 +35,6 @@
       <RelatedProducts :products="products" :loading="productsLoading" title="Featured Products"/>
     </LazyHydrate>
 
-
 <!--    <LazyHydrate when-visible>-->
 <!--      <SfCallToAction-->
 <!--        title="Subscribe to Newsletters"-->
@@ -99,7 +98,7 @@ export default {
   setup() {
     const router = useRouter();
     const { $config } = useContext();
-    const { toggleNewsletterModal } = useUiState();
+    // const { toggleNewsletterModal } = useUiState();
     const { isInCart } = useCart();
     const { addItemToCart } = useAddToCart();
     const heroes = [
@@ -168,10 +167,10 @@ export default {
       }
     ];
 
-    const onSubscribe = (emailAddress) => {
-      Logger.info(`Email ${emailAddress} was added to newsletter.`);
-      toggleNewsletterModal();
-    };
+    // const onSubscribe = (emailAddress) => {
+    //   Logger.info(`Email ${emailAddress} was added to newsletter.`);
+    //   toggleNewsletterModal();
+    // };
 
     // const toggleWishlist = (index) => {
     //   products.value[index].isInWishlist = !products.value[index].isInWishlist;
@@ -196,8 +195,8 @@ export default {
         productGetters.getFeaturedProductsFiltered(featureProducts.value)
       ),
       // toggleWishlist,
-      toggleNewsletterModal,
-      onSubscribe,
+      // toggleNewsletterModal,
+      // onSubscribe,
       addBasePath,
       banners,
       heroes,

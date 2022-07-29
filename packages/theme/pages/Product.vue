@@ -294,14 +294,7 @@ export default {
       }))
     );
 
-    const onAddReviewClose = () => {
-      // console.log('onAddReviewClose');
-      // console.log('onAddReviewClose before productReviews: ' + JSON.stringify(productReviews));
-      // console.log('onAddReviewClose before reviews: ' + JSON.stringify(reviews));
-      Promise.resolve(searchReviews({ productId: id, page: '1' }));
-      // console.log('onAddReviewClose after productReviews: ' + JSON.stringify(productReviews));
-      // console.log('onAddReviewClose after reviews: ' + JSON.stringify(reviews));
-    };
+    const onAddReviewClose = () => Promise.resolve(searchReviews({ productId: id, page: '1' }));
 
     // onSSR(async () => {
     //   let variant = context.root.$route.query;

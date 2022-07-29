@@ -1,5 +1,4 @@
 <template>
-<!--  <LazyHydrate when-visible>-->
   <ValidationObserver v-slot="{ handleSubmit, reset }" key="profile-update">
     <form
       class="form"
@@ -88,11 +87,10 @@
       </SfButton>
     </form>
   </ValidationObserver>
-<!--  </LazyHydrate>-->
 </template>
 
 <script>
-import {computed, defineComponent, ref, useContext} from '@nuxtjs/composition-api';
+import {computed, defineComponent, ref} from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { useUser, userGetters } from '@vue-storefront/prestashop';
 import {
@@ -104,7 +102,6 @@ import {
   SfLoader
 } from '@storefront-ui/vue';
 import { useUiNotification } from '~/composables';
-import {Logger, onSSR} from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 
 export default defineComponent({
@@ -130,7 +127,7 @@ export default defineComponent({
   emits: ['submit'],
   setup(props, { emit }) {
     // const { app: { i18n } } = useContext();
-    const { user, load } = useUser();
+    const { user } = useUser();
     const { send: sendNotification } = useUiNotification();
 
     const password = ref('');

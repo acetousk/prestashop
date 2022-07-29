@@ -49,7 +49,7 @@ const handleRequest = async (context, params) => {
     return data;
 
   } catch (err) {
-    // Currently, when getting accountInfo
+    // Currently, when getting accountInfo and the user isn't logged in an error is thrown with this and that is expected behavior at the moment.
     Logger.error('isSSR: ' + JSON.stringify(process.server) + ' at ' + JSON.stringify(params.url) + ' handleRequest: ', err);
 
     return data;
