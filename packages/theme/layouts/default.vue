@@ -35,7 +35,6 @@ import Notification from '~/components/Notification';
 import {useContext, useRoute} from '@nuxtjs/composition-api';
 // import { useCart, useStore, useUser, useWishlist, useBootstrap } from '@vue-storefront/prestashop';
 import { useCart, useStore, useUser, useBootstrap } from '@vue-storefront/prestashop';
-import {Logger, useVSFContext} from '@vue-storefront/core';
 
 export default {
   name: 'DefaultLayout',
