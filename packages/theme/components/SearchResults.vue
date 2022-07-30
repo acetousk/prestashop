@@ -77,7 +77,7 @@ import {
   SfImage
 } from '@storefront-ui/vue';
 import { ref, watch, computed } from '@nuxtjs/composition-api';
-import { productGetters } from '@vue-storefront/prestashop';
+import { productGetters } from '@vue-storefront/moqui';
 import { addBasePath } from '@vue-storefront/core';
 
 export default {

@@ -3,7 +3,7 @@ import {
   useMakeOrderFactory,
   UseMakeOrderFactoryParams
 } from '@vue-storefront/core';
-import type { Order } from '@vue-storefront/prestashop-api';
+import type { Order } from '@vue-storefront/moqui-api';
 import {handleRequest} from '../helpers';
 
 const factoryParams: UseMakeOrderFactoryParams<Order> = {

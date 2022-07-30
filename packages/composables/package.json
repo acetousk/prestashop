@@ -1,7 +1,8 @@
 {
-  "name": "@vue-storefront/prestashop",
+  "name": "@vue-storefront/moqui",
   "version": "1.0.1",
   "private": false,
+  "license": "MIT",
   "sideEffects": false,
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
@@ -16,7 +17,7 @@
     "update:update": "ncu -u"
   },
   "dependencies": {
-    "@vue-storefront/prestashop-api": "1.0.1",
+    "@vue-storefront/moqui-api": "1.0.1",
     "@vue-storefront/core": "~2.5.4"
   },
   "devDependencies": {

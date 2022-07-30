@@ -10,10 +10,10 @@ RUN cd packages/composables && yarn build && yarn cache clean --all
 
 RUN cd docs \
   && npm install \
-  && sed -i "s/base: '\/',/base: '\/prestashop\/',/g" ./.vuepress/config.js \
+  && sed -i "s/base: '\/',/base: '\/moqui\/',/g" ./.vuepress/config.js \
   && cat ./.vuepress/config.js \
   && npm run build
 
 FROM nginx
 
-COPY --from=build /var/www/docs/.vuepress/dist /usr/share/nginx/html/prestashop
+COPY --from=build /var/www/docs/.vuepress/dist /usr/share/nginx/html/moqui

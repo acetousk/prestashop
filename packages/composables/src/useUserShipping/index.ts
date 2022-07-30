@@ -6,7 +6,7 @@ import {
 import type {
   UserShippingAddress as Address,
   UserShippingAddressItem as AddressItem
-} from '@vue-storefront/prestashop-api';
+} from '@vue-storefront/moqui-api';
 import {handleRequest} from '../helpers';
 
 const params: UseUserShippingFactoryParams<Address, AddressItem> = {

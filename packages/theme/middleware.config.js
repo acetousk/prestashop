@@ -1,13 +1,11 @@
 module.exports = {
   integrations: {
-    prestashop: {
-      location: '@vue-storefront/prestashop-api/server',
+    moqui: {
+      location: '@vue-storefront/moqui-api/server',
       configuration: {
         api: {
-          // url: 'https://rest.binshops.com',
-          // restPath: '/rest'
-          url: 'http://localhost:8080',
-          restPath: '/rest/s1/pop'
+          // url: 'https://rest.binshops.com/rest',
+          url: 'http://localhost:8080/rest/s1/pop'
         }
       }
     }

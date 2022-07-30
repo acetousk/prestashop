@@ -9,7 +9,7 @@
 ## API 
 
 - `load()`
-This method loads bootstrap calls PrestaShop `lightbootstrap` API and loads the properties, like `menuItems`.
+This method loads bootstrap calls Moqui `lightbootstrap` API and loads the properties, like `menuItems`.
 
 - `menuItems`
 This property contains array of category items.

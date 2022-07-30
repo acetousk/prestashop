@@ -232,8 +232,8 @@ import {
   SfProperty
 } from '@storefront-ui/vue';
 import {computed, ref, onMounted, useRouter, useRoute} from '@nuxtjs/composition-api';
-// import { useCart, useWishlist, productGetters, useFacet, facetGetters, wishlistGetters } from '@vue-storefront/prestashop';
-import { useCart, productGetters, useFacet, facetGetters } from '@vue-storefront/prestashop';
+// import { useCart, useWishlist, productGetters, useFacet, facetGetters, wishlistGetters } from '@vue-storefront/moqui';
+import { useCart, productGetters, useFacet, facetGetters } from '@vue-storefront/moqui';
 import { useUiHelpers, useUiState, useUiNotification, useAddToCart } from '~/composables';
 // import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';

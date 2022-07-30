@@ -3,7 +3,7 @@ import {
   useBillingFactory,
   UseBillingParams
 } from '@vue-storefront/core';
-import type { BillingAddress } from '@vue-storefront/prestashop-api';
+import type { BillingAddress } from '@vue-storefront/moqui-api';
 import type {
   UseBillingAddParams as AddParams
 } from '../types';

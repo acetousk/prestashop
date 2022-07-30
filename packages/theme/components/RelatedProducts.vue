@@ -43,14 +43,14 @@ import {
   SfIcon
 } from '@storefront-ui/vue';
 
-import {productGetters, useCart} from '@vue-storefront/prestashop';
-import {useRouter} from '@nuxtjs/composition-api';
-import { useUiNotification} from '~/composables';
+import {productGetters, useCart} from '@vue-storefront/moqui';
+// import {useRouter} from '@nuxtjs/composition-api';
+// import { useUiNotification} from '~/composables';
 import {useAddToCart} from '~/composables';
 
 export default {
   name: 'RelatedProducts',
-  setup(props, context) {
+  setup() {
     const { isInCart } = useCart();
     const { addItemToCart } = useAddToCart();
 

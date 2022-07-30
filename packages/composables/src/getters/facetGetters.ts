@@ -8,7 +8,7 @@ import {
   AgnosticBreadcrumb,
   AgnosticFacet
 } from '@vue-storefront/core';
-import type { PsProduct, Facet, FacetSearchCriteria } from '@vue-storefront/prestashop-api';
+import type { PsProduct, Facet, FacetSearchCriteria } from '@vue-storefront/moqui-api';
 import { populateCategoryProducts } from '../helpers';
 import { populateCategoryTree } from '../helpers';
 

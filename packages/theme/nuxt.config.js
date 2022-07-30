@@ -9,6 +9,14 @@ export default {
     host: '0.0.0.0'
   },
 
+  publicRuntimeConfig: {
+    theme,
+    baseURL: process.env.BASE_URL,
+    productStoreId: 'POPC_DEFAULT',
+    psCustomerCookieKey: 'ps-customer-cookie-key',
+    psCustomerCookieValue: 'ps-customer-cookie-value'
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Vue Storefront',
@@ -52,11 +60,11 @@ export default {
       // @core-development-only-end
       useRawSource: {
         dev: [
-          '@vue-storefront/prestashop',
+          '@vue-storefront/moqui',
           '@vue-storefront/core'
         ],
         prod: [
-          '@vue-storefront/prestashop',
+          '@vue-storefront/moqui',
           '@vue-storefront/core'
         ]
       }
@@ -65,8 +73,8 @@ export default {
     ['@vue-storefront/nuxt-theme', {
       generate: {
         replace: {
-          apiClient: '@vue-storefront/prestashop-api',
-          composables: '@vue-storefront/prestashop'
+          apiClient: '@vue-storefront/moqui-api',
+          composables: '@vue-storefront/moqui'
         }
       },
       routes: false
@@ -75,7 +83,7 @@ export default {
     /* project-only-start
     ['@vue-storefront/nuxt-theme'],
     project-only-end */
-    ['@vue-storefront/prestashop/nuxt', {}]
+    ['@vue-storefront/moqui/nuxt', {}]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -88,6 +96,7 @@ export default {
     '@vue-storefront/middleware/nuxt',
   ],
 
+  // Not sure if this does anything
   // As per: https://www.npmjs.com/package/cookie-universal-nuxt
   //  To make it work for SSR, remember to set `ssr: true` and `target: 'server'`
   ssr: true,
@@ -172,12 +181,6 @@ export default {
         return { x: 0, y: 0 };
       }
     }
-  },
-  publicRuntimeConfig: {
-    theme,
-    baseURL: process.env.BASE_URL,
-    psCustomerCookieKey: 'ps-customer-cookie-key',
-    psCustomerCookieValue: 'ps-customer-cookie-value'
   },
   pwa: {
     meta: {

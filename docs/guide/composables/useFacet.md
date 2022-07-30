@@ -3,7 +3,7 @@
 `useFacet` composable can be used to:
 - fetch products
 - fetch categories
-- filter products - based on PrestaShop faceted search module
+- filter products - based on Moqui faceted search module
 
 ## API
 - `search` Fetches the category data and saves results from the API in the result property.

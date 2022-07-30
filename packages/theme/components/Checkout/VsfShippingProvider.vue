@@ -47,8 +47,8 @@
 <script>
 import { SfButton, SfRadio, SfLink, SfLoader } from '@storefront-ui/vue';
 import { ref, computed } from '@nuxtjs/composition-api';
-import { useShippingProvider } from '@vue-storefront/prestashop';
-import { shippingProviderGetters } from '@vue-storefront/prestashop';
+import { useShippingProvider } from '@vue-storefront/moqui';
+import { shippingProviderGetters } from '@vue-storefront/moqui';
 
 export default {
   name: 'VsfShippingProvider',

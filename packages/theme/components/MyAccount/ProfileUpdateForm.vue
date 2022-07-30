@@ -92,7 +92,7 @@
 <script>
 import {computed, defineComponent, ref} from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import { useUser, userGetters } from '@vue-storefront/prestashop';
+import { useUser, userGetters } from '@vue-storefront/moqui';
 import {
   SfInput,
   SfButton,

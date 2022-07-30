@@ -60,10 +60,10 @@
 </template>
 
 <script>
-import {computed, defineComponent, ref} from '@nuxtjs/composition-api';
+import {computed, defineComponent} from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { SfInput, SfButton } from '@storefront-ui/vue';
-import { useUser, userGetters } from '@vue-storefront/prestashop';
+import { useUser, userGetters } from '@vue-storefront/moqui';
 import { useUiNotification } from '~/composables';
 export default defineComponent({
   name: 'PasswordResetForm',

@@ -49,7 +49,7 @@ import {
 import { ref } from '@nuxtjs/composition-api';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import { useReview } from '@vue-storefront/prestashop';
+import { useReview } from '@vue-storefront/moqui';
 import useUiNotification from '~/composables/useUiNotification';
 import {useUiState} from '~/composables';
 

@@ -1,7 +1,8 @@
 {
-  "name": "@vue-storefront/prestashop-api",
+  "name": "@vue-storefront/moqui-api",
   "version": "1.0.1",
   "private": false,
+  "license": "MIT",
   "sideEffects": false,
   "server": "server/index.js",
   "main": "lib/index.cjs.js",

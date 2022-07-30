@@ -5,7 +5,7 @@ import {
   AgnosticCoupon,
   AgnosticDiscount
 } from '@vue-storefront/core';
-import type { Cart, CartItem } from '@vue-storefront/prestashop-api';
+import type { Cart, CartItem } from '@vue-storefront/moqui-api';
 import { populateCartItems } from '../helpers';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

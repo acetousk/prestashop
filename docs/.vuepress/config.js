@@ -1,7 +1,7 @@
 module.exports = {
-  title: 'Vue Storefront 2 for PrestaShop',
+  title: 'Vue Storefront 2 for Moqui',
   base: '/',
-  description: 'Documentation for the PrestaShop connector for Vue Storefront 2',
+  description: 'Documentation for the Moqui connector for Vue Storefront 2',
   head: [
     ['link', { rel: 'icon', href: '/favicon.png' }]
   ],
@@ -33,14 +33,14 @@ module.exports = {
     '@vuepress/search'
   ],
   themeConfig: {
-    repo: 'https://github.com/vuestorefront-community/prestashop',
+    repo: 'https://github.com/vuestorefront-community/moqui',
     editLinks: false,
     docsDir: 'docs',
     docsBranch: 'develop',
     nav: [
       { text: 'Vue Storefront', link: 'https://vuestorefront.io/' },
       { text: 'Core Doc', link: 'https://docs.vuestorefront.io/v2/' },
-      { text: 'PrestaShop REST API', link: 'https://www.binshops.com/prestashop-api' },
+      { text: 'Moqui POP REST Store API', link: 'https://demo.moqui.org/toolstatic/lib/swagger-ui/index.html?url=https://demo.moqui.org/rest/service.swagger/pop' },
     ],
     sidebar: [
       {
@@ -66,13 +66,6 @@ module.exports = {
           ['/guide/composables/useReview', 'useReview'],
           ['/guide/composables/useUser', 'useUser'],
           ['/guide/composables/useUserShipping', 'useUserShipping'],
-        ]
-      },
-      {
-        title: 'Releases',
-        collapsable: true,
-        children: [
-          ['/guide/releases/v1.0.0', 'v1.0.0'],
         ]
       }
     ]

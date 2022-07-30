@@ -204,7 +204,7 @@ import {
   SfLoader
 } from '@storefront-ui/vue';
 import { computed, ref, watch } from '@nuxtjs/composition-api';
-import { useUserShipping, useCountryList, countryGetters } from '@vue-storefront/prestashop';
+import { useUserShipping, useCountryList, countryGetters } from '@vue-storefront/moqui';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 

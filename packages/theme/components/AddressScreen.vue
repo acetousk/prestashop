@@ -62,8 +62,8 @@ import {
   SfLoader
 } from '@storefront-ui/vue';
 import { computed, ref } from '@nuxtjs/composition-api';
-import { onSSR } from '@vue-storefront/core';
-import { userShippingGetters, useUserShipping } from '@vue-storefront/prestashop';
+// import { onSSR } from '@vue-storefront/core';
+import { userShippingGetters, useUserShipping } from '@vue-storefront/moqui';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationObserver, extend } from 'vee-validate';
 import UserShippingAddress from '~/components/UserShippingAddress';

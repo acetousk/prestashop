@@ -1,12 +1,6 @@
-import {
-  AgnosticMediaGalleryItem,
-  AgnosticAttribute,
-  AgnosticPrice,
-  ProductGetters, FacetSearchResult, AgnosticBreadcrumb
-} from '@vue-storefront/core';
-import type { PsProduct, ProductFilter } from '@vue-storefront/prestashop-api';
+import {AgnosticMediaGalleryItem, AgnosticPrice, ProductGetters, AgnosticBreadcrumb} from '@vue-storefront/core';
+import type { PsProduct, ProductFilter } from '@vue-storefront/moqui-api';
 import { populateFeaturedProducts, populateProducts } from '../helpers';
-import {Facet} from '@vue-storefront/prestashop-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getName(product: PsProduct): string {

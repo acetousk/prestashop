@@ -1,7 +1,7 @@
 import { UserOrderGetters } from '@vue-storefront/core';
-import type { Order, OrderItem } from '@vue-storefront/prestashop-api';
+import type { Order, OrderItem } from '@vue-storefront/moqui-api';
 import { populateOrdersList, populateOrderDetails } from '../helpers';
-import { PsProduct } from '@vue-storefront/prestashop-api';
+import { PsProduct } from '@vue-storefront/moqui-api';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function getOrdersListFiltered(orders:any) {

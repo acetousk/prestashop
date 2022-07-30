@@ -123,7 +123,7 @@ import {
   SfQuantitySelector
 } from '@storefront-ui/vue';
 import { computed } from '@nuxtjs/composition-api';
-import { useCart, useUser, cartGetters } from '@vue-storefront/prestashop';
+import { useCart, useUser, cartGetters } from '@vue-storefront/moqui';
 import { useUiState } from '~/composables';
 import { onSSR } from '@vue-storefront/core';
 import { addBasePath } from '@vue-storefront/core';

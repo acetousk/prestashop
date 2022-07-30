@@ -1,7 +1,7 @@
-# Vue Storefront 2 integration with PrestaShop
+<img src="https://blog.vuestorefront.io/wp-content/uploads/2020/01/1QU9F6hQlFyHsJIbsdmt6FA.png" height="100px" />
 
-This project is a PrestaShop integration for Vue Storefront 2.
+# Vue Storefront 2 integration with moqui
 
-The PrestaShop integration with Vue Storefront is being maintained by [Binshops](https://www.binshops.com).
+This project is a moqui integration for Vue Storefront 2.
 
-You can help us to improve the integration by reporting bugs and contributing to the code at the [repository issues page](https://github.com/vuestorefront/prestashop/issues).
+This integration is currently a **Beta** and not ready for production usage. You can help us to make the integration production-ready faster by reporting bugs and contributing to the code at the [repository issues page](https://github.com/vuestorefront-community/moqui/issues).

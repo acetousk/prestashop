@@ -1,12 +1,12 @@
-import { ApiClientExtension, apiClientFactory } from '@vue-storefront/core';
+import { apiClientFactory } from '@vue-storefront/core';
 import * as api from './api';
 import type { Setttings, Endpoints } from './types';
-import cookieExtension from './extensions/cookie-config';
+// import cookieExtension from './extensions/cookie-config';
 import axios from 'axios';
 
 const onCreate = (settings) => {
   const client = axios.create({
-    baseURL: settings.api.url + settings.api.restPath,
+    baseURL: settings.api.url,
     xsrfHeaderName: 'x-csrf-token',
     // xsrfHeaderName: 'X-CSRF-Token',
     withCredentials: true

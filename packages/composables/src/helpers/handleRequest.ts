@@ -14,7 +14,7 @@ const handleRequest = async (context, params) => {
       moquiSessionToken: moquiSessionToken
     };
   }
-  let data, headers, cookieObject;
+  let data; let headers; let cookieObject;
 
   try {
     // Logger.error('isSSR: ' + JSON.stringify(process.server) + ' at ' + JSON.stringify(params.url) + ' params.headers: ' + JSON.stringify(params.headers));

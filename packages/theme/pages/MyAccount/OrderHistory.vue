@@ -84,9 +84,9 @@ import {
   SfLoader
 } from '@storefront-ui/vue';
 import { computed, ref } from '@nuxtjs/composition-api';
-import { useUserOrder, orderGetters } from '@vue-storefront/prestashop';
+import { useUserOrder, orderGetters } from '@vue-storefront/moqui';
 import { AgnosticOrderStatus } from '@vue-storefront/core';
-import { onSSR } from '@vue-storefront/core';
+// import { onSSR } from '@vue-storefront/core';
 
 export default {
   name: 'OrderHistory',

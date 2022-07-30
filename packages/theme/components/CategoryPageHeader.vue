@@ -83,9 +83,9 @@
 </template>
 
 <script>
-import {computed, ref} from '@nuxtjs/composition-api';
+// import {computed, ref} from '@nuxtjs/composition-api';
 import { useUiHelpers, useUiState } from '~/composables';
-import { useFacet, facetGetters } from '@vue-storefront/prestashop';
+// import { useFacet, facetGetters } from '@vue-storefront/moqui';
 import FiltersSidebar from '~/components/FiltersSidebar';
 import {
   SfButton,

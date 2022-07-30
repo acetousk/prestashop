@@ -34,7 +34,7 @@
 <script>
 import { SfBreadcrumbs, SfContentPages } from '@storefront-ui/vue';
 import { computed, onBeforeUnmount, useRoute, useRouter } from '@nuxtjs/composition-api';
-import { useUser } from '@vue-storefront/prestashop';
+import { useUser } from '@vue-storefront/moqui';
 import MyProfile from './MyAccount/MyProfile';
 import Addresses from './MyAccount/Addresses';
 import BillingDetails from './MyAccount/BillingDetails';

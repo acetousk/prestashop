@@ -102,9 +102,9 @@ import {
   SfAccordion,
   SfLink
 } from '@storefront-ui/vue';
-import { onSSR } from '@vue-storefront/core';
+// import { onSSR } from '@vue-storefront/core';
 import { ref, computed, useRouter, watch } from '@nuxtjs/composition-api';
-import { useMakeOrder, useCart, cartGetters, orderGetters } from '@vue-storefront/prestashop';
+import { useMakeOrder, useCart, cartGetters, orderGetters } from '@vue-storefront/moqui';
 import { addBasePath } from '@vue-storefront/core';
 
 export default {

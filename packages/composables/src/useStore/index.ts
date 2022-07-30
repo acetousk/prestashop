@@ -1,4 +1,4 @@
-import { Store } from '@vue-storefront/prestashop-api';
+import { Store } from '@vue-storefront/moqui-api';
 import {Context, Logger, useStoreFactory} from '@vue-storefront/core';
 
 export const useStore = useStoreFactory<Store>({

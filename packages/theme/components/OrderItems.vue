@@ -21,7 +21,7 @@
 
 <script>
 import { onBeforeMount, ref, computed } from '@nuxtjs/composition-api';
-import { useUserOrder, orderGetters } from '@vue-storefront/prestashop';
+import { useUserOrder, orderGetters } from '@vue-storefront/moqui';
 import {
   SfTable
 } from '@storefront-ui/vue';

@@ -1,4 +1,4 @@
-import { Store } from '@vue-storefront/prestashop-api';
+import { Store } from '@vue-storefront/moqui-api';
 import { AgnosticStore, UseStoreGetters } from '@vue-storefront/core';
 import { UseStoreFilterParams } from '../types';
 

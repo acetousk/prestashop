@@ -216,8 +216,8 @@ import {
   useReview,
   useUser,
   reviewGetters
-} from '@vue-storefront/prestashop';
-import { onSSR } from '@vue-storefront/core';
+} from '@vue-storefront/moqui';
+// import { onSSR } from '@vue-storefront/core';
 import LazyHydrate from 'vue-lazy-hydration';
 import cacheControl from './../helpers/cacheControl';
 import useUiNotification from '~/composables/useUiNotification';

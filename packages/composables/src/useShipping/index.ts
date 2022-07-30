@@ -3,7 +3,7 @@ import {
   useShippingFactory,
   UseShippingParams
 } from '@vue-storefront/core';
-import type { ShippingAddress } from '@vue-storefront/prestashop-api';
+import type { ShippingAddress } from '@vue-storefront/moqui-api';
 import type {
   UseShippingAddParams as AddParams
 } from '../types';

@@ -30,9 +30,9 @@ import { email, required, min, confirmed } from 'vee-validate/dist/rules';
 import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm';
 import { SfTabs, SfInput, SfButton } from '@storefront-ui/vue';
-import { useUser, userGetters } from '@vue-storefront/prestashop';
-import {computed, useRouter} from '@nuxtjs/composition-api';
-import {useUiNotification, useUiState} from '~/composables';
+import { useUser, userGetters } from '@vue-storefront/moqui';
+import {computed} from '@nuxtjs/composition-api';
+// import {useUiNotification, useUiState} from '~/composables';
 import {Logger} from '@vue-storefront/core';
 
 extend('email', {

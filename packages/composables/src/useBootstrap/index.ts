@@ -25,7 +25,8 @@ export const useBootstrap = () => {
         params: {
           // eslint-disable-next-line camelcase
           menu_with_images: 'single',
-          requestHostName: context.req?.headers?.host
+          requestHostName: context.req?.headers?.host,
+          productStoreId: context.$moqui.config.app.$config.productStoreId
         }
       });
 

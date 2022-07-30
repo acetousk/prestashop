@@ -1,4 +1,4 @@
-import { SP_TOKEN_COOKIE_NAME } from '@vue-storefront/prestashop/nuxt/helpers';
+import { SP_TOKEN_COOKIE_NAME } from '@vue-storefront/moqui/nuxt/helpers';
 import { integrationPlugin } from '@vue-storefront/core';
 
 const moduleOptions = JSON.parse('<%= JSON.stringify(options) %>');
@@ -25,7 +25,7 @@ export default integrationPlugin(({ app, integration }) => {
     return app.$cookies.get(SP_TOKEN_COOKIE_NAME);
   };
 
-  integration.configure('prestashop', {
+  integration.configure('moqui', {
     ...moduleOptions,
     app,
     additionalProperties: {

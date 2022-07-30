@@ -1,6 +1,6 @@
 import {Context, Logger, useCartFactory, UseCartFactoryParams, useVSFContext} from '@vue-storefront/core';
 import { useContext } from '@nuxtjs/composition-api';
-import type {Cart, CartItem, PsProduct} from '@vue-storefront/prestashop-api';
+import type {Cart, CartItem, PsProduct} from '@vue-storefront/moqui-api';
 import {handleRequest} from '../helpers';
 
 const params: UseCartFactoryParams<Cart, CartItem, PsProduct> = {
@@ -65,6 +65,8 @@ const params: UseCartFactoryParams<Cart, CartItem, PsProduct> = {
 
       return data;
     } catch (error) {
+      Logger.error('useCart AddItem error.message: ' + JSON.stringify(error.message));
+
       if (error.message) throw error;
     }
   },

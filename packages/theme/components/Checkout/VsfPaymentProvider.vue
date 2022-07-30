@@ -26,8 +26,8 @@
 <script>
 import { SfButton, SfRadio, SfLoader } from '@storefront-ui/vue';
 import { ref, onBeforeMount, computed, watch } from '@nuxtjs/composition-api';
-import { usePayment } from '@vue-storefront/prestashop';
-import { paymentProviderGetters } from '@vue-storefront/prestashop';
+import { usePayment } from '@vue-storefront/moqui';
+import { paymentProviderGetters } from '@vue-storefront/moqui';
 
 export default {
   name: 'VsfPaymentProvider',

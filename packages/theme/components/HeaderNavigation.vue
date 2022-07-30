@@ -31,9 +31,7 @@
 <script>
 import { SfMenuItem, SfModal } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
-import {
-  useBootstrap
-} from '@vue-storefront/prestashop';
+import {useBootstrap} from '@vue-storefront/moqui';
 
 export default {
   name: 'HeaderNavigation',

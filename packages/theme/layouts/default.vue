@@ -31,10 +31,8 @@ import WishlistSidebar from '~/components/WishlistSidebar.vue';
 import LoginModal from '~/components/LoginModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import Notification from '~/components/Notification';
-// import { onSSR } from '@vue-storefront/core';
 import {useContext, useRoute} from '@nuxtjs/composition-api';
-// import { useCart, useStore, useUser, useWishlist, useBootstrap } from '@vue-storefront/prestashop';
-import { useCart, useStore, useUser, useBootstrap } from '@vue-storefront/prestashop';
+import { useCart, useUser, useBootstrap } from '@vue-storefront/prestashop';
 
 export default {
   name: 'DefaultLayout',
@@ -56,9 +54,9 @@ export default {
     const route = useRoute();
     const { $cookies } = useContext();
     const {boot: boot} = useBootstrap();
-    const { load: loadStores } = useStore();
     const { isAuthenticated, load: loadUser } = useUser();
     const { load: loadCart } = useCart();
+    // const { load: loadStores } = useStore();
     // const { load: loadWishlist } = useWishlist();
 
     // only run client side
@@ -67,7 +65,7 @@ export default {
       boot()
         .then(() => {
           let promiseList = [
-            loadStores(),
+            // loadStores(),
             loadCart()
             // loadWishlist()
           ];

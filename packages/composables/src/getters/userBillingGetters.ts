@@ -1,9 +1,5 @@
 import { UserBillingGetters } from '@vue-storefront/core';
-import type {
-  UserBillingAddress as Address,
-  UserBillingAddressItem as AddressItem,
-  UserBillingAddressSearchCriteria
-} from '@vue-storefront/prestashop-api';
+import type {UserBillingAddress as Address, UserBillingAddressItem as AddressItem, UserBillingAddressSearchCriteria} from '@vue-storefront/moqui-api';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getAddresses(billing: Address, criteria?: UserBillingAddressSearchCriteria): AddressItem[] {

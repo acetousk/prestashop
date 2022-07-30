@@ -1,5 +1,5 @@
-import {useShippingProviderFactory, UseShippingProviderParams, Context, Logger} from '@vue-storefront/core';
-import type { ShippingProvider, ShippingMethod } from '@vue-storefront/prestashop-api';
+import {useShippingProviderFactory, UseShippingProviderParams, Context} from '@vue-storefront/core';
+import type { ShippingProvider, ShippingMethod } from '@vue-storefront/moqui-api';
 import {handleRequest} from '../helpers';
 
 const params: UseShippingProviderParams<ShippingProvider, ShippingMethod> = {
@@ -21,7 +21,6 @@ const params: UseShippingProviderParams<ShippingProvider, ShippingMethod> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { shippingMethod } = params;
-
 
     await handleRequest(context, {method: 'post',
       url: '/setcarriercheckout',

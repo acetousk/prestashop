@@ -1,4 +1,4 @@
-import {logger} from './logging';
+// import {logger} from './logging';
 
 const parsePsCookie = (str) =>
   str
@@ -13,7 +13,7 @@ const parsePsCookie = (str) =>
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const cookieParser = (headers) => {
-  // to get the latest Auth cookie - normally there are two PrestaShop cookies
+  // to get the latest Auth cookie - normally there are two Moqui cookies
   const cookieArray = headers['set-cookie'] ? headers['set-cookie'] : [];
 
   // logger.info('cookieArray' + JSON.stringify(cookieArray));

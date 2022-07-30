@@ -81,17 +81,17 @@ import {
   SfIcon
 } from '@storefront-ui/vue';
 import RelatedProducts from '~/components/RelatedProducts.vue';
-import { ref, useContext, useRouter } from '@nuxtjs/composition-api';
+import { useContext, useRouter } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
-import {useAddToCart, useUiState} from '../composables';
+import {useAddToCart} from '../composables';
 import cacheControl from './../helpers/cacheControl';
-import {onSSR, addBasePath, Logger} from '@vue-storefront/core';
+import {addBasePath} from '@vue-storefront/core';
 import { computed } from '@nuxtjs/composition-api';
 import { useUiNotification } from '~/composables';
 
-import {useProduct, productGetters, useCart} from '@vue-storefront/prestashop';
+import {useProduct, productGetters, useCart} from '@vue-storefront/moqui';
 
 export default {
   name: 'Home',

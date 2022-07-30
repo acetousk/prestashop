@@ -1,32 +1,54 @@
 import {Context, Logger, useUserFactory, UseUserFactoryParams} from '@vue-storefront/core';
-import type { User } from '@vue-storefront/prestashop-api';
+import type { User } from '@vue-storefront/moqui-api';
 import type {UseUserUpdateParams as UpdateParams, UseUserRegisterParams as RegisterParams} from '../types';
 import {handleRequest} from '../helpers';
+// import {useBootstrap} from '../useBootstrap';
 
-const params: UseUserFactoryParams<User, UpdateParams, RegisterParams> = {
+const params: UseUserFactoryParams<any, UpdateParams, RegisterParams> = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   load: async (context: Context) => {
-    const data: any = await handleRequest(context, {method: 'get', url: '/accountInfo'});
+    let data;
+    try {
+      data = await handleRequest(context, {method: 'get', url: '/accountInfo'});
 
-    if (data?.errorCode) {
-      throw { message: data?.errors ? data?.errors : 'User load failed' };
-      return null;
+      if (data?.errorCode) {
+        throw { message: data?.errors ? data?.errors : 'User load failed' };
+        return null;
+      }
+
+      return data?.psdata;
+
+    } catch (error) {
+      Logger.debug('useUser load error.message: ' + JSON.stringify(error.message));
+      return data?.psdata;
     }
-
-    return data?.psdata;
-
-    // todo: setup User type
-    return {};
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logOut: async (context: Context) => {
-    const data = await handleRequest(context, {method: 'get', url: '/logout'});
+    await handleRequest(context, {method: 'get', url: '/logout'});
 
-    context.$prestashop.config.app.$cookies.remove(context.$prestashop.config.app.$config.psCustomerCookieKey);
-    context.$prestashop.config.app.$cookies.remove(context.$prestashop.config.app.$config.psCustomerCookieValue);
-    context.$prestashop.config.app.$cookies.remove('moquiSessionToken');
+    context.$moqui.config.app.$cookies.remove(context.$moqui.config.app.$config.psCustomerCookieKey);
+    context.$moqui.config.app.$cookies.remove(context.$moqui.config.app.$config.psCustomerCookieValue);
+    context.$moqui.config.app.$cookies.remove('moquiSessionToken');
+
+    // After logout, remove cookies because it'll invalidate the session and call lightBootstrap to send store and get cookies.
+    await handleRequest(context, {method: 'get',
+      url: '/lightbootstrap',
+      params: {
+        // eslint-disable-next-line camelcase
+        menu_with_images: 'single',
+        requestHostName: context.req?.headers?.host,
+        productStoreId: context.$moqui.config.app.$config.productStoreId
+      }
+    });
+
+    // const test = context;
+    //
+    // Logger.error('load typeof test ' + JSON.stringify(typeof test));
+    // Logger.error('load Object.getOwnPropertyNames(test) ' + JSON.stringify(Object.getOwnPropertyNames(test)));
+    // Logger.error('load test ' + JSON.stringify(test));
   },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

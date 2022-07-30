@@ -77,9 +77,9 @@ import {
 } from '@storefront-ui/vue';
 import UserShippingAddress from '~/components/UserShippingAddress';
 import ShippingAddressForm from '~/components/MyAccount/ShippingAddressForm';
-import { useUserShipping, userShippingGetters } from '@vue-storefront/prestashop';
+import { useUserShipping, userShippingGetters } from '@vue-storefront/moqui';
 import { ref, computed } from '@nuxtjs/composition-api';
-import { onSSR } from '@vue-storefront/core';
+// import { onSSR } from '@vue-storefront/core';
 
 export default {
   name: 'ShippingDetails',

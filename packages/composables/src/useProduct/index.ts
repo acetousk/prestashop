@@ -3,7 +3,7 @@ import {
   useProductFactory,
   UseProductFactoryParams
 } from '@vue-storefront/core';
-import type { Product } from '@vue-storefront/prestashop-api';
+import type { Product } from '@vue-storefront/moqui-api';
 import type {
   UseProductSearchParams as SearchParams
 } from '../types';

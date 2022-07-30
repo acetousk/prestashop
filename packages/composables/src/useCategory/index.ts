@@ -3,7 +3,7 @@ import {
   useCategoryFactory,
   UseCategoryFactoryParams
 } from '@vue-storefront/core';
-import type { Category } from '@vue-storefront/prestashop-api';
+import type { Category } from '@vue-storefront/moqui-api';
 import type {
   UseCategorySearchParams as SearchParams
 } from '../types';

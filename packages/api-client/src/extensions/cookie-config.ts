@@ -1,3 +1,4 @@
+/*
 import { ApiClientExtension, Logger } from '@vue-storefront/core';
 import type { Request, Response } from 'express';
 import { parse as parseCookie } from 'cookie';
@@ -38,7 +39,7 @@ const cookieConfig: ApiClientExtension = {
   name: 'cookieConfig',
   hooks: (req: Request, res: Response) => ({
     beforeCreate({ configuration }) {
-      // const psCookieKey = await context.$prestashop.config.app.$cookies.get(await context.$prestashop.config.app.$config.psCustomerCookieKey);
+      // const psCookieKey = await context.$moqui.config.app.$cookies.get(await context.$moqui.config.app.$config.psCustomerCookieKey);
       // const cookie = request.cookies.foo || 'default';
       // const cookieConfiguration = loadCookieConfiguration(cookie);
       console.log('#### configuration');
@@ -181,3 +182,4 @@ const cookieConfig: ApiClientExtension = {
 };
 
 export default cookieConfig;
+ */

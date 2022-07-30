@@ -32,8 +32,8 @@ import {
 } from '@storefront-ui/vue';
 import { ref } from '@nuxtjs/composition-api';
 import { useUiState } from '~/composables';
-import { onSSR } from '@vue-storefront/core';
-import {useShipping, useUser} from '@vue-storefront/prestashop';
+// import { onSSR } from '@vue-storefront/core';
+import {useShipping, useUser} from '@vue-storefront/moqui';
 import {required, min, email, confirmed} from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 import CreateAccountForm from '~/components/MyAccount/CreateAccountForm';

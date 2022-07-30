@@ -1,5 +1,5 @@
-import { Logger } from '@vue-storefront/core';
-import { productGetters, useCart } from '@vue-storefront/prestashop';
+// import { Logger } from '@vue-storefront/core';
+import { productGetters, useCart } from '@vue-storefront/moqui';
 import { useRouter, useContext } from '@nuxtjs/composition-api';
 import { useUiNotification } from '~/composables';
 
@@ -7,7 +7,7 @@ import { useUiNotification } from '~/composables';
 const useAddToCart = () => {
   const router = useRouter();
   const { app } = useContext();
-  const { cart, addItem: addItemToCartBase, error: cartError } = useCart();
+  const { addItem: addItemToCartBase, error: cartError } = useCart();
   const { send: sendNotification } = useUiNotification();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
