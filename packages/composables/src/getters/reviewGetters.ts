@@ -8,27 +8,27 @@ function getItems(review: any): ReviewItem[] {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getReviewId(review: ReviewItem): string {
-  return review.id_product_comment;
+  return review['id_product_comment'];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getReviewAuthor(review: ReviewItem): string {
-  return review.firstname + ' ' + review.lastname;
+  return review['firstname'] + ' ' + review['lastname'];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getReviewMessage(review: ReviewItem): string {
-  return review.content;
+  return review['content'];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getReviewRating(review: ReviewItem): number {
-  return parseInt(review.grade);
+  return parseInt(review['grade']);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getReviewDate(review: ReviewItem): string {
-  return review.date_add;
+  return review['date_add'];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/explicit-module-boundary-types

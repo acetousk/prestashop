@@ -1,4 +1,4 @@
-/*
+//*
 import { ApiClientExtension, Logger } from '@vue-storefront/core';
 import type { Request, Response } from 'express';
 import { parse as parseCookie } from 'cookie';
@@ -182,4 +182,4 @@ const cookieConfig: ApiClientExtension = {
 };
 
 export default cookieConfig;
- */
+// */
