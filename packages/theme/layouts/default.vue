@@ -32,7 +32,7 @@ import LoginModal from '~/components/LoginModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import Notification from '~/components/Notification';
 import {useContext, useRoute} from '@nuxtjs/composition-api';
-import { useCart, useUser, useBootstrap } from '@vue-storefront/prestashop';
+import { useCart, useUser, useBootstrap } from '@vue-storefront/moqui';
 
 export default {
   name: 'DefaultLayout',
